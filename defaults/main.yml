@@ -1,7 +1,34 @@
 ---
-kibana_version: "4.6"
 
-kibana_server_port: 5601
-kibana_server_host: "0.0.0.0"
 
-kibana_elasticsearch_url: "http://localhost:9200"
+kibana:
+  # Used to determine which config file to use
+  major_version: '5.x'
+  version: "5.4.0"
+  apt_repo_map:
+    '4.6': 'https://packages.elastic.co/kibana/{{ kibana__version }}/debian'
+    '5.x': 'https://artifacts.elastic.co/packages/{{ kibana__version }}/apt'
+  apt_repo: 'deb {{ kibana.apt_repo_map[kibana.major_version] }} stable main'
+  host: 0.0.0.0
+  install_dir: '/usr/share/kibana'
+  config_path_map:
+    '4.6': '/opt/kibana/config'
+    '5.x': '/etc/kibana'
+  config_dir: "{{ kibana.config_path_map[kibana.major_version] }}"
+  config_file: 'kibana.yml'
+  run_user: kibana
+  run_group: kibana
+  port: 5601
+  dependencies:
+    - "{ package: apt-transport-https, state: present }"
+  plugins: [ ]
+
+elasticsearch:
+  url: "http://localhost:9200"
+  gpg_key: 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+  preserveHost: 'true'
+
+
+  # Plug in Examples:
+  #  - plugin_name: mobz/elasticsearch-head
+  #    plugin_dir:  head
