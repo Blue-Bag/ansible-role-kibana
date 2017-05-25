@@ -2,24 +2,24 @@
 dependencies: []
 
 galaxy_info:
-  author: geerlingguy
+  author: George Boobyer
   description: Kibana for Linux.
-  company: "Midwestern Mac, LLC"
+  company: "Blue-Bag Ltd"
   license: "license (BSD, MIT)"
   min_ansible_version: 2.0
   platforms:
-  - name: EL
-    versions:
-    - 6
-    - 7
+  # - name: EL
+  #   versions:
+  #   - 6
+  #   - 7
   - name: Debian
     versions:
     - jessie
-  - name: Ubuntu
-    versions:
-    - precise
-    - trusty
-    - xenial
+  # - name: Ubuntu
+  #   versions:
+  #   - precise
+  #   - trusty
+  #   - xenial
   galaxy_tags:
     - web
     - system
