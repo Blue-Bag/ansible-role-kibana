@@ -1,0 +1,16 @@
+##
+# {{ ansible_managed }}
+#
+description "Kibana5"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+
+limit nofile 32768 32768
+
+script
+  exec {{ kibana.install_dir }}/bin/kibana \
+    -c {{ kibana.config_dir }}/config/{{ kibana.config_file }}
+end script
