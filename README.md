@@ -1,6 +1,5 @@
-# Ansible Role: Kibana
+# Ansible Role: Kibana 5
 
-[![Build Status](https://travis-ci.org/geerlingguy/ansible-role-kibana.svg?branch=master)](https://travis-ci.org/geerlingguy/ansible-role-kibana)
 
 An Ansible Role that installs Kibana on RedHat/CentOS or Debian/Ubuntu.
 
@@ -12,7 +11,7 @@ None.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-    kibana_version: "4.6"
+    kibana_version: "5.4"
 
 The version of kibana to install (major and minor only).
 
@@ -25,6 +24,10 @@ The FQDN or IP address and port Kibana should use.
 
 The URL (including port) over which Kibana will connect to Elasticsearch.
 
+Note that upgrading from 4.x to 5.x:
+Kibana 4.x used a different config location than 5.0+, so if you’re upgrading from 4.x, you will need to copy the configurations from your old config (/opt/kibana/config/kibana.yml) to your new config (/etc/kibana/kibana.yml).
+
+
 ## Dependencies
 
 None.
@@ -33,12 +36,21 @@ None.
 
     - hosts: kibana
       roles:
-        - geerlingguy.kibana
+        - ansible-role-kibana
+
+
+## Kibana configuration
+
+https://www.elastic.co/guide/en/kibana/current/settings.html
+
 
 ## License
 
 MIT / BSD
 
 ## Author Information
+George Boobyer
 
-This role was created in 2014 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).
+This role based on a role created in 2014 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).
+
+Updated with elements from https://github.com/sansible/kibana.
