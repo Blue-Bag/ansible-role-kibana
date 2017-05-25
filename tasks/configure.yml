@@ -1,0 +1,65 @@
+---
+
+
+- name: Copy Kibana configuration (4.x).
+  template:
+    src: kibana.yml.j2
+    dest: "/opt/kibana/config/kibana.yml"
+    owner: root
+    group: root
+    mode: 0644
+  when: kibana.major_version | version_compare('5.0', '<=')
+  notify: restart kibana
+  become: true
+  become_user: root
+
+- name: Copy Kibana configuration (5.x).
+  template:
+    src: kibana5.yml.j2
+    dest: "{{ kibana.config_dir }}/{{ kibana.config_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: kibana.major_version | version_compare('5.0', '>=')
+  notify: restart kibana
+  become: true
+  become_user: root
+
+- block:
+    - name: Ensure Systemd defaults are in place
+      become: yes
+      template:
+        src: kibana.defaultenv.j2
+        dest: /etc/default/kibana
+        mode: 764
+      notify:
+        - restart kibana
+
+    - name: Ensure Systemd Service Configuration
+      become: yes
+      template:
+        src: kibana.systemd.j2
+        dest: /etc/systemd/system/kibana.service
+        mode: 764
+      notify:
+        - start kibana
+  when: ansible_service_mgr is defined and ansible_service_mgr == 'systemd'
+
+- name: Install Kibana service
+  become: yes
+  template:
+    src: kibana.service.conf.j2
+    dest: /etc/init/kibana.conf
+    mode: 764
+  notify:
+    - start kibana
+  when: ansible_service_mgr is not defined or ansible_service_mgr != 'systemd'
+
+- name: Enable Kibana service
+  become: yes
+  service:
+    name: kibana
+    enabled: yes
+  notify:
+    - start kibana
+
