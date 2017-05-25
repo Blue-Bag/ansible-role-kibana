@@ -1,6 +1,9 @@
-[kibana-{{ kibana_version }}]
-name=Kibana repository for {{ kibana_version }}.x packages
-baseurl=https://packages.elastic.co/kibana/{{ kibana_version }}/centos
+##
+# {{ ansible_managed }}
+#
+[kibana-{{ kibana.major_version }}]
+name=Kibana repository for {{ kibana.version }}.x packages
+baseurl=https://packages.elastic.co/kibana/{{ kibana.major_version }}/centos
 gpgcheck=1
-gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch
+gpgkey={{ elasticsearch.gpg_key }}
 enabled=1
