@@ -1,26 +1,13 @@
 ---
 
 
-- name: Copy Kibana configuration (4.x).
-  template:
-    src: kibana.yml.j2
-    dest: "/opt/kibana/config/kibana.yml"
-    owner: root
-    group: root
-    mode: 0644
-  when: kibana.major_version | version_compare('5.0', '<=')
-  notify: restart kibana
-  become: true
-  become_user: root
-
-- name: Copy Kibana configuration (5.x).
+- name: Copy Kibana configuration.
   template:
     src: kibana5.yml.j2
-    dest: "{{ kibana.config_dir }}/{{ kibana.config_file }}"
+    dest: "{{ kibana.config_path_map[kibana.major_version] }}/{{ kibana.config_file }}"
     owner: root
     group: root
     mode: 0644
-  when: kibana.major_version | version_compare('5.0', '>=')
   notify: restart kibana
   become: true
   become_user: root
@@ -63,3 +50,32 @@
   notify:
     - start kibana
 
+- block:
+    - name: Check for kibana log
+      stat:
+        path: "{{ kibana.log_dest }}"
+      become: true
+      register: kibanalog
+
+    - name: Touch kibana log - needs to exist
+      file:
+        path: "{{ kibana.log_dest }}"
+        state: touch
+        owner: "{{kibana.run_user}}"
+        group: "{{ kibana.run_group }}"
+        mode: 0640
+      when: kibanalog.stat.exists == false
+      notify:
+        - restart kibana
+  become: true
+  when: kibana.log
+
+- name: configure Kibana log rotation
+  template:
+    src: kibana.logrotate.j2
+    dest: /etc/logrotate.d/kibana
+    owner: root
+    group: root
+    mode: 0644
+  when: kibana.log
+  become: true

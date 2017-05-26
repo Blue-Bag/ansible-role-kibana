@@ -1,0 +1,9 @@
+{{ kibana.log_dest }} {
+        missingok
+        rotate {{ kibana.log_rotate_count | default(7) }}
+        {{ kibana.log_rotate_interval | default('daily') }}
+        compress
+        copytruncate
+        notifempty
+        create 640 root root
+}

@@ -87,6 +87,9 @@ elasticsearch.preserveHost: {{ elasticsearch.preserveHost | default('true') }}
 
 # Enables you specify a file where Kibana stores log output.
 #logging.dest: stdout
+{% if kibana.log %}
+logging.dest: {{ kibana.log_dest }}
+{% endif %}
 
 # Set the value of this setting to true to suppress all logging output.
 #logging.silent: false
@@ -105,3 +108,5 @@ elasticsearch.preserveHost: {{ elasticsearch.preserveHost | default('true') }}
 # The default locale. This locale can be used in certain circumstances to substitute any missing
 # translations.
 #i18n.defaultLocale: "en"
+
+console.enabled: true

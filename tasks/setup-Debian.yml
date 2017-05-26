@@ -12,7 +12,7 @@
 
 - name: Add Kibana repository.
   apt_repository:
-    repo: "{{kibana.apt_repo}}"
+    repo: "{{ kibana.apt_repo_map[kibana.major_version] }}"
     state: present
     update_cache: yes
 

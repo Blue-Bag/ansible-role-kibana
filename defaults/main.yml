@@ -6,21 +6,29 @@ kibana:
   major_version: '5.x'
   version: "5.4.0"
   apt_repo_map:
-    '4.6': 'https://packages.elastic.co/kibana/{{ kibana__version }}/debian'
-    '5.x': 'https://artifacts.elastic.co/packages/{{ kibana__version }}/apt'
-  apt_repo: 'deb {{ kibana.apt_repo_map[kibana.major_version] }} stable main'
+    '4.6': 'deb https://packages.elastic.co/kibana/4.x/debian stable main'
+    '5.x': 'deb https://artifacts.elastic.co/packages/5.x/apt stable main'
   host: 0.0.0.0
   install_dir: '/usr/share/kibana'
+  plugin_install_map:
+    '4.x': 'kibana plugin --install'
+    '5.x': 'kibana-plugin install'
   config_path_map:
     '4.6': '/opt/kibana/config'
     '5.x': '/etc/kibana'
-  config_dir: "{{ kibana.config_path_map[kibana.major_version] }}"
   config_file: 'kibana.yml'
   run_user: kibana
   run_group: kibana
+  log: yes
+  log_dest: /var/log/kibana.log
+  log_rotate_count: 5
+  log_rotate_interval: daily
   port: 5601
   dependencies:
-    - "{ package: apt-transport-https, state: present }"
+    - {
+        package: apt-transport-https,
+        state: present
+      }
   plugins: [ ]
 
 elasticsearch:
@@ -32,3 +40,4 @@ elasticsearch:
   # Plug in Examples:
   #  - plugin_name: mobz/elasticsearch-head
   #    plugin_dir:  head
+  # note that sense is now console and marvel is x-pack

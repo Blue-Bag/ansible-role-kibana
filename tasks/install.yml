@@ -9,10 +9,14 @@
 - name: Install Kibana.
   package: name=kibana state=present
 
+- name: debug
+  debug:
+    msg: "Install command: {{ kibana.install_dir }}/bin/{{ kibana.plugin_install_map[kibana.major_version] }}"
+
 
 - name: Install Kibana plugins
   become: yes
-  command: "{{ kibana.install_dir }}/bin/kibana plugin --install {{ item.plugin_name }}"
+  command: "{{ kibana.install_dir }}/bin/{{ kibana.plugin_install_map[kibana.major_version] }} {{ item.plugin_name }}"
   args:
     chdir: "{{ kibana.install_dir }}"
     creates: "{{ kibana.install_dir }}/installedPlugins/{{ item.plugin_dir }}"
@@ -20,7 +24,23 @@
     JAVA_HOME: /usr/share/java
   with_items: "{{ kibana.plugins }}"
 
+- name: Install Kibana service
+  become: yes
+  template:
+    src: kibana.service.conf.j2
+    dest: /etc/init/kibana.conf
+    mode: 764
+  notify:
+    - start kibana
+  when: ansible_service_mgr is not defined or ansible_service_mgr != 'systemd'
 
+- name: Enable Kibana service
+  become: yes
+  service:
+    name: kibana
+    enabled: yes
+  notify:
+    - start kibana
 
 - name: Ensure Kibana is started and enabled at boot.
   service:

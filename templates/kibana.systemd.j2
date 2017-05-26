@@ -13,7 +13,7 @@ Group={{ kibana.run_group }}
 # exist, it continues onward.
 EnvironmentFile=-/etc/default/kibana
 # EnvironmentFile=-/etc/sysconfig/kibana
-ExecStart={{ kibana.install_dir }}/bin/kibana "-c {{ kibana.config_dir }}/{{ kibana.config_file }}"
+ExecStart={{ kibana.install_dir }}/bin/kibana "-c {{ kibana.config_path_map[kibana.major_version] }}/{{ kibana.config_file }}"
 Restart=always
 WorkingDirectory=/
 
