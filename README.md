@@ -28,6 +28,10 @@ Note that upgrading from 4.x to 5.x:
 Kibana 4.x used a different config location than 5.0+, so if you’re upgrading from 4.x, you will need to copy the configurations from your old config (/opt/kibana/config/kibana.yml) to your new config (/etc/kibana/kibana.yml).
 
 
+Note that the default vars are in a hash so unless you copy the entire set you will need to set your hash_behaviour to merge
+
+
+
 ## Dependencies
 
 None.
