@@ -30,6 +30,10 @@ kibana:
         state: present
       }
   plugins: [ ]
+  ssl:
+    enabled: false
+    certificate: ''
+    key: ''
 
 elasticsearch:
   url: "http://localhost:9200"
