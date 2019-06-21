@@ -13,9 +13,11 @@ kibana:
   plugin_install_map:
     '4.x': 'kibana plugin --install'
     '5.x': 'kibana-plugin install'
+    '6.x': 'kibana-plugin install'
   config_path_map:
     '4.6': '/opt/kibana/config'
     '5.x': '/etc/kibana'
+    '6.x': '/etc/kibana'
   config_file: 'kibana.yml'
   run_user: kibana
   run_group: kibana
@@ -24,6 +26,13 @@ kibana:
   log_rotate_count: 5
   log_rotate_interval: daily
   port: 5601
+  package:
+    name: kibana
+    state: present
+  service:
+    name: kibana
+    state: started
+    enable: True
   dependencies:
     - {
         package: apt-transport-https,
@@ -39,7 +48,8 @@ elasticsearch:
   url: "http://localhost:9200"
   gpg_key: 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
   preserveHost: 'true'
-
+  username: ""
+  password: ""
 
   # Plug in Examples:
   #  - plugin_name: mobz/elasticsearch-head

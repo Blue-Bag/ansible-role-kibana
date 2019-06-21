@@ -3,7 +3,9 @@
 #
 [kibana-{{ kibana.major_version }}]
 name=Kibana repository for {{ kibana.version }}.x packages
-baseurl=https://packages.elastic.co/kibana/{{ kibana.major_version }}/centos
+baseurl=https://artifacts.elastic.co/packages/{{ kibana.major_version }}/yum
 gpgcheck=1
 gpgkey={{ elasticsearch.gpg_key }}
 enabled=1
+autorefresh=1
+type=rpm-md
