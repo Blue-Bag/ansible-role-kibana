@@ -8,6 +8,8 @@ kibana:
   apt_repo_map:
     '4.6': 'deb https://packages.elastic.co/kibana/4.x/debian stable main'
     '5.x': 'deb https://artifacts.elastic.co/packages/5.x/apt stable main'
+    '6.x': 'deb https://artifacts.elastic.co/packages/6.x/apt stable main'
+    '7.x': 'deb https://artifacts.elastic.co/packages/7.x/apt stable main'
   host: 0.0.0.0
   install_dir: '/usr/share/kibana'
   plugin_install_map:
@@ -32,7 +34,7 @@ kibana:
   service:
     name: kibana
     state: started
-    enable: True
+    enabled: True
   dependencies:
     - {
         package: apt-transport-https,
