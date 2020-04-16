@@ -21,7 +21,7 @@ server.host: {{ kibana.host }}
 #server.name: "your-hostname"
 
 # The URL of the Elasticsearch instance to use for all your queries.
-elasticsearch.url: {{ elasticsearch.url }}
+elasticsearch.hosts: {{ elasticsearch.url }}
 
 # When this setting's value is true Kibana uses the hostname specified in the server.host
 # setting. When the value of this setting is false, Kibana uses the hostname of the host
@@ -39,7 +39,7 @@ elasticsearch.preserveHost: {{ elasticsearch.preserveHost | default('true') }}
 # the username and password that the Kibana server uses to perform maintenance on the Kibana
 # index at startup. Your Kibana users still need to authenticate with Elasticsearch, which
 # is proxied through the Kibana server.
-{% if elasticsearch.username and elasticsearch.password %}
+{% if elasticsearch.username is defined and elasticsearch.password is defined %}
 elasticsearch.username: "{{ elasticsearch.username }}"
 elasticsearch.password: "{{ elasticsearch.password }}"
 {% else %}

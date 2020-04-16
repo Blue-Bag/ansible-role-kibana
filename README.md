@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Blue-Bag/ansible-role-kibana.svg?branch=master)](https://travis-ci.org/Blue-Bag/ansible-role-kibana)
 # Ansible Role: Kibana 5
 
 

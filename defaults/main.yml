@@ -3,8 +3,8 @@
 
 kibana:
   # Used to determine which config file to use
-  major_version: '5.x'
-  version: "5.4.0"
+  major_version: '7.x'
+  version: "7.6.1"
   apt_repo_map:
     '4.6': 'deb https://packages.elastic.co/kibana/4.x/debian stable main'
     '5.x': 'deb https://artifacts.elastic.co/packages/5.x/apt stable main'
@@ -16,10 +16,12 @@ kibana:
     '4.x': 'kibana plugin --install'
     '5.x': 'kibana-plugin install'
     '6.x': 'kibana-plugin install'
+    '7.x': 'kibana-plugin install'
   config_path_map:
     '4.6': '/opt/kibana/config'
     '5.x': '/etc/kibana'
     '6.x': '/etc/kibana'
+    '7.x': '/etc/kibana'
   config_file: 'kibana.yml'
   run_user: kibana
   run_group: kibana
@@ -40,7 +42,7 @@ kibana:
         package: apt-transport-https,
         state: present
       }
-  plugins: [ ]
+  plugins: []
   ssl:
     enabled: false
     certificate: ''
