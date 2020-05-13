@@ -18,7 +18,7 @@
       template:
         src: kibana.defaultenv.j2
         dest: /etc/default/kibana
-        mode: 764
+        mode: '0764'
       notify:
         - restart kibana
 
@@ -27,7 +27,7 @@
       template:
         src: kibana.systemd.j2
         dest: /etc/systemd/system/kibana.service
-        mode: 764
+        mode: '0764'
       notify:
         - start kibana
   when: ansible_service_mgr is defined and ansible_service_mgr == 'systemd'
