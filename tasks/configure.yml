@@ -3,7 +3,7 @@
 
 - name: Copy Kibana configuration.
   template:
-    src: kibana5.yml.j2
+    src: kibana6.yml.j2
     dest: "{{ kibana.config_path_map[kibana.major_version] }}/{{ kibana.config_file }}"
     owner: root
     group: root

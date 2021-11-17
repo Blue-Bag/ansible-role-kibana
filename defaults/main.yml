@@ -26,7 +26,7 @@ kibana:
   run_user: kibana
   run_group: kibana
   log: yes
-  log_dest: /var/log/kibana.log
+  log_dest: /var/log/kibana/kibana.log
   log_rotate_count: 5
   log_rotate_interval: daily
   port: 5601
