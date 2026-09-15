@@ -6,9 +6,10 @@
   with_items: "{{ kibana.dependencies }}"
 
 - name: Add Elasticsearch apt key.
-  apt_key:
+  ansible.builtin.get_url:
     url: "{{ elasticsearch.gpg_key }}"
-    state: present
+    dest: /etc/apt/trusted.gpg.d/elasticsearch.asc
+    mode: "0644"
 
 - name: Add Kibana repository.
   apt_repository:
