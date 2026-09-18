@@ -6,10 +6,10 @@ kibana:
   major_version: '7.x'
   version: "7.6.1"
   apt_repo_map:
-    '4.6': 'deb https://packages.elastic.co/kibana/4.x/debian stable main'
-    '5.x': 'deb https://artifacts.elastic.co/packages/5.x/apt stable main'
-    '6.x': 'deb https://artifacts.elastic.co/packages/6.x/apt stable main'
-    '7.x': 'deb https://artifacts.elastic.co/packages/7.x/apt stable main'
+    '4.6': 'https://packages.elastic.co/kibana/4.x/debian'
+    '5.x': 'https://artifacts.elastic.co/packages/5.x/apt'
+    '6.x': 'https://artifacts.elastic.co/packages/6.x/apt'
+    '7.x': 'https://artifacts.elastic.co/packages/7.x/apt'
   host: 0.0.0.0
   install_dir: '/usr/share/kibana'
   plugin_install_map:
