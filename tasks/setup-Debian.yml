@@ -5,35 +5,38 @@
     state: "{{ item.state }}"
   with_items: "{{ kibana.dependencies }}"
 
-- name: Install repository management dependencies.
-  ansible.builtin.apt:
-    name: python3-debian
-    state: present
+- name: Configure Kibana repository.
+  when: kibana.add_repository | default(true)
+  block:
+    - name: Install repository management dependencies.
+      ansible.builtin.apt:
+        name: python3-debian
+        state: present
 
-- name: Add Elasticsearch apt key.
-  ansible.builtin.get_url:
-    url: "{{ elasticsearch.gpg_key }}"
-    dest: /etc/apt/trusted.gpg.d/elasticsearch.asc
-    mode: "0644"
+    - name: Add Elasticsearch apt key.
+      ansible.builtin.get_url:
+        url: "{{ elasticsearch.gpg_key }}"
+        dest: "{{ kibana.apt_keyring | default('/etc/apt/trusted.gpg.d/elasticsearch.asc') }}"
+        mode: "0644"
 
-- name: Remove legacy Kibana repository list file.
-  ansible.builtin.file:
-    path: /etc/apt/sources.list.d/kibana.list
-    state: absent
+    - name: Remove legacy Kibana repository list file.
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/kibana.list
+        state: absent
 
-- name: Add Kibana repository.
-  ansible.builtin.deb822_repository:
-    name: kibana
-    types: deb
-    uris: "{{ kibana.apt_repo_map[kibana.major_version] }}"
-    suites: stable
-    components: main
-    signed_by: /etc/apt/trusted.gpg.d/elasticsearch.asc
-    state: present
-  register: kibana_repo
+    # apt_repo_map entries may be a bare URL or a full "deb URL suite component" line.
+    - name: Add Kibana repository.
+      ansible.builtin.deb822_repository:
+        name: kibana
+        types: deb
+        uris: "{{ kibana.apt_repo_map[kibana.major_version] | regex_search('https?://\\S+') }}"
+        suites: stable
+        components: main
+        signed_by: "{{ kibana.apt_keyring | default('/etc/apt/trusted.gpg.d/elasticsearch.asc') }}"
+        state: present
+      register: kibana_repo
 
-- name: Update apt cache after adding repository.
-  ansible.builtin.apt:
-    update_cache: true
-  when: kibana_repo.changed
-
+    - name: Update apt cache after adding repository.
+      ansible.builtin.apt:
+        update_cache: true
+      when: kibana_repo.changed
